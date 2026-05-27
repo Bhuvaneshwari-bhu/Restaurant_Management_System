@@ -22,6 +22,16 @@ export default function Orders() {
       <h1 className="text-4xl font-bold mb-8">My Orders</h1>
 
       <div className="space-y-6">
+        {orders.length === 0 && (
+  <div className="text-center py-20">
+    <h2 className="text-3xl font-bold text-gray-700">
+      No orders yet 
+    </h2>
+    <p className="text-gray-500 mt-2">
+      You haven’t placed any orders.
+    </p>
+  </div>
+)}
         {orders.map((order) => (
           <div key={order._id} className="bg-white p-6 rounded-2xl shadow">
             

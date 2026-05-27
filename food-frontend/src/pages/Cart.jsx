@@ -107,6 +107,16 @@ const removeItem = async (productId) => {
       </h1>
 
       <div className="space-y-6">
+        {cart.length === 0 && (
+  <div className="text-center py-20">
+    <h2 className="text-3xl font-bold text-gray-700">
+      Your cart is empty 🛒
+    </h2>
+    <p className="text-gray-500 mt-2">
+      Add some delicious food to get started!
+    </p>
+  </div>
+)}
 
         {cart.map((item) => (
 
