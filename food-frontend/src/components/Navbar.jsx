@@ -46,6 +46,12 @@ export default function Navbar({ search, setSearch }) {
 >
   My Orders
 </button>
+<button
+  onClick={() => navigate("/restaurant/orders")}
+  className="px-5 py-2 rounded-xl border border-gray-300 hover:border-black"
+>
+  Restaurant orders
+</button>
             <button
               onClick={() => navigate("/cart")}
               className="px-5 py-2 rounded-xl bg-black text-white hover:bg-gray-800"
