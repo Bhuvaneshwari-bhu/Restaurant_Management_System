@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import api from "../api/api";
 
+import { io } from "socket.io-client";
+// const socket = io("http://localhost:3000");
+
 export default function Orders() {
   const [orders, setOrders] = useState([]);
 
@@ -14,8 +17,40 @@ export default function Orders() {
   };
 
   useEffect(() => {
-    getOrders();
-  }, []);
+  getOrders();
+
+  const token = localStorage.getItem("token");
+
+  if (!token) return;
+
+  try {
+    const decoded = JSON.parse(atob(token.split(".")[1]));
+
+    const userId = decoded.id || decoded._id;
+
+    if (!userId) return;
+
+    socket.emit("join_room", userId);
+
+    socket.on("order_updated", (updatedOrder) => {
+      setOrders((prev) =>
+        prev.map((o) =>
+          o._id === updatedOrder._id
+            ? { ...o, status: updatedOrder.status }
+            : o
+        )
+      );
+    });
+
+  } catch (err) {
+    console.log("Socket auth error:", err);
+  }
+
+  return () => {
+    socket.off("order_updated");
+  };
+
+}, []);
 
   return (
     <div className="min-h-screen bg-gray-50 px-10 py-10">

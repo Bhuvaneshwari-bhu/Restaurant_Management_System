@@ -1,18 +1,47 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import api from "../api/api";
 
-export default function Navbar({ search, setSearch }) {
+export default function Navbar({
+  search = "",
+  setSearch = () => {},
+}) {
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
+  const [user, setUser] = useState(null);
+//   const [loading, setLoading] = useState(true);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+// useEffect(() => {
+//   api.get("/auth/me")
+//     .then((res) => {
+//       setUser(res.data);
+//     })
+//     .catch(() => {
+//       setUser(null);
+//     })
+//     .finally(() => {
+//       setLoading(false);
+//     });
+// }, []);
+useEffect(() => {
+  api.get("/auth/me")
+    .then((res) => setUser(res.data))
+    .catch(() => setUser(null));
+}, []);
+
+const role = user?.role;
+
+  const handleLogout = async () => {
+  await api.post("/auth/logout");
+  setUser(null);
+  navigate("/login");
+};
+
 
   return (
     <nav className="w-full bg-white border-b border-gray-100 px-8 py-5 flex items-center justify-between sticky top-0 z-50">
-
+      
       {/* Logo */}
       <div>
         <h1
@@ -24,42 +53,69 @@ export default function Navbar({ search, setSearch }) {
       </div>
 
       {/* Search */}
-      <div className="w-[40%]">
-        <input
-          type="text"
-          placeholder="Search foods..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full px-5 py-3 rounded-2xl bg-gray-100 outline-none border border-transparent focus:border-black transition"
-        />
-      </div>
+      {role === "user" && (
+        <div className="w-[40%]">
+          <input
+            type="text"
+            placeholder="Search foods..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full px-5 py-3 rounded-2xl bg-gray-100 outline-none border border-transparent focus:border-black transition"
+          />
+        </div>
+      )}
 
       {/* Right Side */}
       <div className="flex items-center gap-4">
-
-        {token ? (
+        {user ? (
           <>
+            {/* USER */}
+            {role === "user" && (
+              <>
+                <button
+                  onClick={() => navigate("/orders")}
+                  className="px-5 py-2 rounded-xl border border-gray-300 hover:border-black"
+                >
+                  My Orders
+                </button>
 
-          <button
-  onClick={() => navigate("/orders")}
-  className="px-5 py-2 rounded-xl border border-gray-300 hover:border-black"
->
-  My Orders
-</button>
-<button
-  onClick={() => navigate("/restaurant/orders")}
-  className="px-5 py-2 rounded-xl border border-gray-300 hover:border-black"
->
-  Restaurant orders
-</button>
-            <button
-              onClick={() => navigate("/cart")}
-              className="px-5 py-2 rounded-xl bg-black text-white hover:bg-gray-800"
-            >
-              Cart
-            </button>
+                <button
+                  onClick={() => navigate("/cart")}
+                  className="px-5 py-2 rounded-xl bg-black text-white hover:bg-gray-800"
+                >
+                  Cart
+                </button>
+              </>
+            )}
 
-            
+            {/* RESTAURANT ADMIN */}
+            {role === "restaurant_admin" && (
+              <>
+                <button
+                  onClick={() => navigate("/restaurant/dashboard")}
+                  className="px-5 py-2 rounded-xl border border-gray-300 hover:border-black"
+                >
+                  Restaurant Dashboard
+                </button>
+
+                <button
+                  onClick={() => navigate("/restaurant/orders")}
+                  className="px-5 py-2 rounded-xl bg-black text-white"
+                >
+                  Restaurant Orders
+                </button>
+              </>
+            )}
+
+            {/* ADMIN */}
+            {role === "admin" && (
+              <button
+                onClick={() => navigate("/admin/dashboard")}
+                className="px-5 py-2 rounded-xl bg-black text-white"
+              >
+                Admin Dashboard
+              </button>
+            )}
 
             <button
               onClick={handleLogout}
@@ -85,7 +141,6 @@ export default function Navbar({ search, setSearch }) {
             </button>
           </>
         )}
-
       </div>
     </nav>
   );
