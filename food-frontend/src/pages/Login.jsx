@@ -15,21 +15,35 @@ export default function Login() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const res = await api.post("/auth/login", form);
+  try {
 
-      console.log("login success");
+    await api.post("/auth/login", form);
 
-      localStorage.setItem("token", res.data.token);
+    // small delay so cookie gets stored
+    await new Promise((r) => setTimeout(r, 200));
 
+    const res = await api.get("/auth/me");
+
+    const role = res.data.role;
+
+    console.log("ROLE:", role);
+
+    if (role === "admin") {
+      navigate("/admin/dashboard");
+
+    } else if (role === "restaurant_admin") {
+      navigate("/restaurant/dashboard");
+
+    } else {
       navigate("/");
-    } catch (err) {
-      console.log(err.response?.data);
     }
-  };
 
+  } catch (err) {
+    console.log(err.response?.data || err.message);
+  }
+};
   return (
     <div className="h-screen flex items-center justify-center">
       <form onSubmit={handleSubmit} className="p-6 bg-white shadow rounded-xl w-80">
