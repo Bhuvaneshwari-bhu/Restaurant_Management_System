@@ -1,0 +1,9 @@
+// in terminal enter "npm init -y" -> package.json
+// In package.json :
+//      in scripts add 
+//      "serve" : "node index.js"
+//npm i express -> package-lock.json
+//index.js
+
+// npm install mongodb
+// npm i mongoose
