@@ -1,11 +1,13 @@
 const categories = [
   "All",
   "Biryani",
+  "Indian",
   "Pizza",
   "Burger",
-  "Dessert",
-  "Indian",
   "Pasta",
+  "Dessert",
+  "Wraps",
+  "Chinese"
 ];
 
 export default function Categories({
