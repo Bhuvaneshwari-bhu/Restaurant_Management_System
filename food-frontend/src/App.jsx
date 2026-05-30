@@ -7,6 +7,7 @@ import Orders from "./pages/Orders";
 import RestaurantOrders from "./pages/RestaurantOrders";
 import RestaurantDashboard from "./pages/RestaurantDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminRestaurantDetails from "./pages/AdminRestaurantDetails";
 function App() {
   return (
     <Routes>
@@ -24,6 +25,11 @@ function App() {
 <Route
   path="/restaurant/dashboard"
   element={<RestaurantDashboard />}
+/>
+
+<Route
+  path="/admin/restaurants/:id"
+  element={<AdminRestaurantDetails />}
 />
     </Routes>
   );
