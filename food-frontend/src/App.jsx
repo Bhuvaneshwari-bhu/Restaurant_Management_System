@@ -8,6 +8,7 @@ import RestaurantOrders from "./pages/RestaurantOrders";
 import RestaurantDashboard from "./pages/RestaurantDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminRestaurantDetails from "./pages/AdminRestaurantDetails";
+import RestaurantFoods from "./pages/RestaurantFoods";
 function App() {
   return (
     <Routes>
@@ -30,6 +31,11 @@ function App() {
 <Route
   path="/admin/restaurants/:id"
   element={<AdminRestaurantDetails />}
+/>
+
+<Route
+  path="/restaurants/:id"
+  element={<RestaurantFoods />}
 />
     </Routes>
   );
