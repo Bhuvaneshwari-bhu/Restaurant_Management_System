@@ -61,6 +61,9 @@ const adminRoutes = require("./routes/admin.routes");
 
 app.use("/api/admin", adminRoutes);
 
+const reviewRoutes = require("./routes/review.routes");
+app.use("/api/reviews", reviewRoutes);
+
 // User logs in
 //  ↓
 // adds food to cart
