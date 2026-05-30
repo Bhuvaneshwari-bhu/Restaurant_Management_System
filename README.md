@@ -3,7 +3,6 @@
 
 A full-stack, role-based restaurant ordering and management platform built using the MERN stack.
 The system supports **Customers, Restaurant Owners, and Platform Administrators** with separate dashboards and controlled access.
-AI-assisted review classification for intelligent feedback analysis.
 
 ---
 
@@ -40,7 +39,7 @@ Backend (Render): [https://restaurant-management-system-oqs9.onrender.com](https
 
 This project is a multi-role restaurant ecosystem where:
 
-* Users can browse restaurants, explore menus, add items to cart, place orders and submit reviews.
+* Users can browse restaurants, explore menus, add items to cart and place orders.
 * Restaurant owners can manage their menu items and track incoming orders.
 * Platform administrators can manage all restaurants, products, users, and view system-wide analytics.
 
@@ -158,23 +157,6 @@ The backend follows a modular MVC structure:
   * Role-based authorization middleware
 
 ---
-## AI Integration (Review Intelligence System)
-
-The platform includes an AI-assisted review analysis system that classifies user feedback into sentiment categories.
-
-### Features
-Users can submit reviews for food items and restaurants
-Reviews are automatically analyzed and categorized as:
-Positive
-Neutral
-Negative
-Helps restaurant owners understand customer sentiment quickly
-Enables structured and meaningful feedback interpretation
-### Purpose
-
-This feature introduces intelligent feedback processing into a traditional restaurant system, improving decision-making and analytics.
-
----
 
 ## Core Features
 
@@ -272,6 +254,5 @@ Login → Dashboard → Manage Platform → Monitor System Activity
 * Built a full-stack MERN application with role-based access control for users, restaurant owners, and administrators.
 * Designed and implemented RESTful APIs using Node.js and Express with MongoDB for managing restaurants, products, users, and orders.
 * Developed responsive React frontend with protected routing and dashboard-based architecture.
-* Integrated AI-based sentiment analysis system to classify user reviews for actionable insights.
 * Deployed full-stack application on Vercel and Render, resolving production issues including authentication, CORS, and routing in a live environment.
 
