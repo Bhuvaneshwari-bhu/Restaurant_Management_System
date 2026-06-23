@@ -53,14 +53,18 @@ The system is built with a focus on **role-based access control, scalable backen
 
 ```
 Frontend (React)
-   ↓ Axios API Calls
+   ↓
 Backend (Node + Express)
    ↓
-Authentication Middleware (JWT + Cookies)
+Authentication Middleware (JWT)
    ↓
-Role Middleware (User / Restaurant Admin / Admin)
+Authorization Middleware (RBAC)
    ↓
-MongoDB Atlas Database
+Business Logic (Cart / Orders)
+   ↓
+Payment Gateway (Razorpay)
+   ↓
+MongoDB Atlas
 ```
 
 ---
@@ -164,10 +168,34 @@ The backend follows a modular MVC structure:
 * Role-based route protection (RBAC system)
 * Restaurant-to-product relational mapping
 * Order management system with status tracking
+* Secure payment integration using Razorpay (order creation + signature verification)
 * Admin analytics dashboard (users, revenue, orders)
 * Fully responsive UI using Tailwind CSS
 * RESTful API design
 * Protected frontend routing
+
+---
+## Payment System (Razorpay Integration)
+
+The platform uses Razorpay for secure payment processing.
+
+### Flow:
+1. User places order → backend creates Razorpay order
+2. Razorpay checkout opens on frontend
+3. Payment is completed by user
+4. Backend verifies payment signature using Razorpay secret key
+5. Order is created in MongoDB
+6. User cart is cleared automatically
+
+### Security:
+* Payment signature verification using `crypto` module
+* Razorpay secret key stored in environment variables
+* Order is only created after successful verification
+
+### Features:
+* Test mode enabled (Razorpay test keys)
+* Secure order creation endpoint
+* Idempotent payment handling (prevents duplicate orders)
 
 ---
 
@@ -245,6 +273,7 @@ Login → Dashboard → Manage Platform → Monitor System Activity
 * State management with API integration
 * Production deployment (Vercel + Render + MongoDB Atlas)
 * Debugging real-world deployment issues (CORS, cookies, routing, build errors)
+* Integrated secure payment gateway (Razorpay) with order creation and server-side signature verification
 
 ---
 
@@ -253,6 +282,7 @@ Login → Dashboard → Manage Platform → Monitor System Activity
 
 * Built a full-stack MERN application with role-based access control for users, restaurant owners, and administrators.
 * Designed and implemented RESTful APIs using Node.js and Express with MongoDB for managing restaurants, products, users, and orders.
+* Integrated Razorpay payment gateway with secure server-side signature verification and automated order creation workflow.
 * Developed responsive React frontend with protected routing and dashboard-based architecture.
 * Deployed full-stack application on Vercel and Render, resolving production issues including authentication, CORS, and routing in a live environment.
 
