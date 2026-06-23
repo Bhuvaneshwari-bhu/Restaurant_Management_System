@@ -70,20 +70,83 @@ const decreaseItem = async (productId) => {
     getCart();
   }
 };
-
-const placeOrder = async () => {
+const handlePayment = async () => {
   try {
-    const res = await api.post("/orders/place");
 
-    alert("Order placed successfully ✅");
-    // setCart([]); // clear UI instantly
-   await getCart();// sync with backend
+    const { data: order } = await api.post("/payments/create-order");
 
-  } catch (err) {
-    console.log(err);
-    alert(err.response?.data?.message || "Order failed");
+    const options = {
+      key: "rzp_test_T4wWpLfgykw0qa", // your key id
+
+      amount: order.amount,
+      currency: order.currency,
+
+      name: "Food Ordering App",
+      description: "Order Payment",
+
+      order_id: order.id,
+
+//       handler: async function (response) {
+
+//         alert("Payment Successful ✅");
+
+//         console.log(response);
+
+//         // await placeOrder();
+//         await api.post("/payments/verify-payment", response);
+// await placeOrder();
+//       },
+
+
+handler: async function (response) {
+  try {
+    const res = await api.post("/payments/verify-payment", response);
+
+    if (!res.data.success) {
+      alert("Payment verification failed ❌");
+      return;
+    }
+
+    alert(res.data.message || "Order placed successfully ✅");
+
+    console.log("Order:", res.data.order);
+
+    getCart(); // refresh UI
+
+  } catch (error) {
+    console.log(error);
+    alert("Payment failed or verification error");
+    // console.error(res.data.message);
+  }
+},
+      theme: {
+        color: "#000000",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+
+    rzp.open();
+
+  } catch (error) {
+    console.log(error);
+    alert("Payment failed");
   }
 };
+
+// const placeOrder = async () => {
+//   try {
+//     const res = await api.post("/orders/place");
+
+//     alert("Order placed successfully ✅");
+//     // setCart([]); // clear UI instantly
+//    await getCart();// sync with backend
+
+//   } catch (err) {
+//     console.log(err);
+//     alert(err.response?.data?.message || "Order failed");
+//   }
+// };
 
 const removeItem = async (productId) => {
   try {
@@ -198,10 +261,10 @@ const removeItem = async (productId) => {
         </h2>
 
         <button
-  onClick={placeOrder}
+  onClick={handlePayment}
   className="mt-6 bg-white text-black px-8 py-4 rounded-2xl font-semibold hover:bg-gray-200 transition"
 >
-  Place Order
+  Pay & Place Order
 </button>
 
       </div>
